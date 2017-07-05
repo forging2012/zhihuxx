@@ -24,7 +24,10 @@ import (
 
 var (
 	// 问题链接
-	Qurl      = "https://www.zhihu.com/api/v4/questions/%s/answers?"
+	Qurl = "https://www.zhihu.com/api/v4/questions/%s/answers?"
+
+	// 单答案链接
+	Q1url     = "https://www.zhihu.com/question/%s/answer/%s"
 	Qurlquery = "sort_by=default&include=data[*].%s"
 	// 各种参数，问题获取到的JSON字段意思
 	Qurlparm = []string{
@@ -109,6 +112,21 @@ func CatchAnswer(url string, limit, page int) ([]byte, error) {
 	//fmt.Println(uurl)
 	Baba.SetUrl(uurl)
 
+	body, err := Baba.Get()
+	if err != nil {
+
+	} else {
+		if strings.Contains(string(body), "AuthenticationInvalid") {
+			data, _ := JsonBack(body)
+			return data, errors.New("AuthenticationInvalid cookie fail")
+		}
+	}
+	return body, err
+}
+
+// 抓单个答案，需传入问题ID和答案ID 鸡肋功能，弃用！
+func CatchOneAnswer(Qid, Aid string) ([]byte, error) {
+	Baba.SetUrl(fmt.Sprintf(Q1url, Qid, Aid))
 	body, err := Baba.Get()
 	if err != nil {
 

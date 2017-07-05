@@ -77,3 +77,20 @@ func TestSavePicture(t *testing.T) {
 	}
 	SavePicture(dir, body)
 }
+
+func TestCatchOneAnswer(t *testing.T) {
+	e := SetCookie("/home/jinhan/cookie.txt")
+	if e != nil {
+		fmt.Println(e.Error())
+	}
+	//https://www.zhihu.com/question/22030591/answer/22392511
+	Qid := "22030591"
+	Aid := "22392511"
+	data, e := CatchOneAnswer(Qid, Aid)
+	if e != nil {
+		fmt.Println(e.Error())
+	} else {
+		fmt.Println(string(data))
+		util.SaveToFile(filepath.Join(util.CurDir(), "data/onequestion.html"), data)
+	}
+}
