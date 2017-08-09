@@ -12,17 +12,49 @@ limitations under the License
 */
 package zhihuxx
 
+import "fmt"
+
 var (
 	// 谁关注
-	followers = "https://www.zhihu.com/api/v4/members/%s/followers?"
+	followersrurl = "https://www.zhihu.com/api/v4/members/%s/followers?"
 
 	// 关注谁
-	followees = "https://www.zhihu.com/api/v4/members/%s/followees?"
-	fparm     = "data[*].answer_count,articles_count,gender,follower_count,is_followed,is_following,badge[?(type=best_answerer)].topics"
+	followeesurl = "https://www.zhihu.com/api/v4/members/%s/followees?include="
+	fparm        = "data[*].answer_count,articles_count,gender,follower_count,is_followed,is_following,badge[?(type=best_answerer)].topics"
+)
+
+type FollowData struct {
+	Page PageInfo           `json:"paging"`
+	Data []FollowerDataInfo `json:"data"`
+}
 
 /*
-include:data[*].answer_count,articles_count,gender,follower_count,is_followed,is_following,badge[?(type=best_answerer)].topics
-offset:20
-limit:20
+"is_followed": false,
+"avatar_url_template": "https://pic3.zhimg.com/f9c55d14d855e0bf44511bd9c0f73aae_{size}.jpg",
+"user_type": "people",
+"answer_count": 13,
+"is_following": false,
+"headline": "环境工程专业学生",
+"url_token": "li-bin-63-8-70",
+"id": "98a410425c393a2a64c35bdca8ad8f27",
+"articles_count": 0,
+"type": "people",
+"name": "李斌",
+"url": "http://www.zhihu.com/api/v4/people/98a410425c393a2a64c35bdca8ad8f27",
+"gender": -1,
+"is_advertiser": false,
+"avatar_url": "https://pic3.zhimg.com/f9c55d14d855e0bf44511bd9c0f73aae_is.jpg",
+"is_org": false,
+"follower_count": 12,
+"badge": []
 */
-)
+type FollowerDataInfo struct {
+}
+
+func Followees(token string) string {
+	return fmt.Sprintf(followeesurl, token) + fparm + "&limit=%d&offset=%d"
+}
+
+func Followers(token string) string {
+	return fmt.Sprintf(followeesurl, token) + fparm + "&limit=%d&offset=%d"
+}
