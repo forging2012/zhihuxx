@@ -139,6 +139,21 @@ func CatchOneAnswer(Qid, Aid string) ([]byte, error) {
 	return body, err
 }
 
+// 解析单个答案，待完善
+func ParseOneAnswer(data []byte) map[string]string {
+	a, e := query.QueryBytes(data)
+	if e != nil {
+		println(e.Error())
+	}
+	b := a.Find(".CopyrightRichText-richText")
+	c, e := b.Html()
+	if e != nil {
+		println(e.Error())
+	}
+	d := map[string]string{"text": c}
+	return d
+}
+
 // 结构化回答，返回一个结构体
 func StructAnswer(body []byte) (*Answer, error) {
 	temp := new(Answer)

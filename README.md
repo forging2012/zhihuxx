@@ -1,17 +1,18 @@
-# 项目：知乎xx API
+# 项目：某乎xx API
 
-已实现功能： 
+已实现API功能： 
 
 1. 通过单个问题id获取批量答案
 2. 通过集合id获取批量问题后获取批量答案
-3. 关注别人（风险大容易被封杀去除,xxxx）
-4. 登录(验证码问题去除,xxxx),待人工破解验证码
-5. 通过答案id获取单个回答 （鸡肋，弃用）
+3. 关注别人（风险大容易被封杀,建议不要使用）
+4. 登录(本来可以登录，后来某乎加了倒置验证码),该验证码破解较容易
+5. 通过答案id获取单个回答（有点鸡肋，还是写了）
+6. 根据用户唯一域名id获取其关注的人，和关注她的人  （正在实现。。。）
 
 待实现功能：
  
 2. 根据用户唯一域名id获取她（它）他的全部回答（有用，优先级高
-3. 根据用户唯一域名id获取其关注的人，和关注她的人  （正在实现。。。）
+
 
 ## 一.小白指南
 
@@ -139,10 +140,14 @@ import zhihu "github.com/hunterhug/zhihuxx"
 
 API如下：
 
+1.Cookie相关
 ```go
 // 设置cookie，需传入文件位置，文件中放cookie
 func SetCookie(file string) error 
+```
 
+2.问题相关
+```go
 // 构造问题链接，返回url
 func Question(id string) string
 
@@ -151,7 +156,10 @@ func CatchAnswer(url string, limit, page int) ([]byte, error)
 
 // 结构化回答，返回一个结构体
 func StructAnswer(body []byte) (*Answer, error)
+```
 
+3.集合相关
+```go
 // 抓取收藏夹第几页列表
 func CatchCoolection(id, page int) ([]byte, error)
 
@@ -160,7 +168,10 @@ func CatchAllCollection(id int) map[string]string
 
 // 解析收藏夹，返回问题ID和标题
 func ParseCollection(body []byte) map[string]string
+```
 
+4.工具相关
+```go
 // 输出HTML选择防盗链方式
 func SetPublishToWeb(put bool)
 
@@ -183,14 +194,25 @@ func SetLogLevel(level string)
 func SetWaitTime(w int)
 ```
 
-谨慎使用
-
-```
-// 关注某人
+5.用户相关
+```go
+// 关注某人，建议不用
 func FollowWho(who string) ([]byte, error) {
+// 抓取用户：fensi 抓取你的粉丝，否则，抓取你的偶像，token为用户：如https://www.zhihu.com/people/hunterhug中的hunterhug,limit限制最多20条
+func CatchUser(fensi bool, token string, limit, offset int) ([]byte, error) {
+// 解析用户
+func ParseUser(data []byte) FollowData {
+}
 ```
 
-还差某些API，需逐步优化。
+建议不用API：
+
+```go
+// 抓单个答案，需传入问题ID和答案ID 鸡肋功能，弃用！
+func CatchOneAnswer(Qid, Aid string) ([]byte, error) {
+// 解析单个答案，待完善
+func ParseOneAnswer(data []byte) map[string]string {
+```
 
 使用时需要先`SetCookie()`，再根据具体进行开发，使用如下：
 

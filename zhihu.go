@@ -99,6 +99,9 @@ func SetCookie(file string) error {
 		return err
 	}
 	cookie := string(haha)
+	cookie = strings.Replace(cookie, " ", "", -1)
+	cookie = strings.Replace(cookie, "\n", "", -1)
+	cookie = strings.Replace(cookie, "\r", "", -1)
 	Baba.SetHeaderParm("Cookie", strings.TrimSpace(cookie))
 	return nil
 }
