@@ -1,5 +1,7 @@
 # 项目：某乎xx API
 
+编译文件更新于 `2017年 08月 29日 星期二 10:56:18 CST`
+
 已实现API功能： 
 
 1. 通过单个问题id获取批量答案
@@ -22,7 +24,7 @@ Golang开发的爬虫，小白用户请下载`main`文件夹下的`zhihu_windows
 
 打开火狐浏览器后人工登录知乎，按F12，点击网络，刷新一下首页，然后点击第一个出现的`GET /`，找到消息头请求头，复制Cookie，然后粘贴到cookie.txt
 
-![](data/cookie.png)
+![](doc/cookie.png)
 
 点击EXE后,可选JS解决防盗链（这个是你要发布到自己的网站如：[减肥成功是什么感觉？给生活带来哪些改变？](http://www.lenggirl.com/zhihu/26613082-html/1.html)）
 我们自己本地看的话就不要选择防盗链了！回答个数已经限制不大于500个。如果没有答案证明Cookie失效，请重新按照上述方法手动修改`cookie.txt`。
@@ -95,8 +97,8 @@ y
 
 结果：
 
-![](data/1.png)
-![](data/2.png)
+![](doc/1.png)
+![](doc/2.png)
 
 目录结构及获取的数据如下:
 
@@ -137,7 +139,7 @@ go get -u -v github.com/hunterhug/zhihuxx
 二次开发时你只需`import`本包。
 
 ```go
-import zhihu "github.com/hunterhug/zhihuxx"
+import zhihu "github.com/hunterhug/zhihuxx/src"
 ```
 
 API如下：
@@ -223,7 +225,7 @@ package main
 
 import (
 	"fmt"
-	zhihu "github.com/hunterhug/zhihuxx"
+	zhihu "github.com/hunterhug/zhihuxx/src"
 	"strings"
 )
 
@@ -298,7 +300,7 @@ func main() {
 func Login(email, password string) ([]byte, error)
 ```
 
-![](data/ca.png)
+![](doc/ca.png)
 
 ```
 _xsrf:2fc4811def8cd9f358465e4ea418b23b
@@ -310,7 +312,7 @@ email:wefwefwefwef@qq.com
 
 待收集`https://www.zhihu.com/captcha.gif?r=1497501049814&type=login&lang=cn`进行机器学习！
 
-![](data/captcha.gif)
+![](doc/captcha.gif)
 
 ## 三.编译执行文件方式
 
@@ -344,7 +346,7 @@ GOOS=windows GOARCH=386 go build -ldflags "-s -w" -x -o zhihu_windows_386.exe ma
 go build -o zhihu.exe main.go
 ```
 
-如果你觉得项目帮助到你,欢迎请我喝杯咖啡
+如果你觉得项目帮助到你,欢迎请我喝杯咖啡,或加QQ：459527502
 
 微信
 ![微信](https://raw.githubusercontent.com/hunterhug/hunterhug.github.io/master/static/jpg/wei.png)
