@@ -140,7 +140,8 @@ func OneOutputHtml(data string) string {
 	} else {
 		bb := r.FindAllSubmatch([]byte(s), -1)
 		for _, v := range bb {
-			s = strings.Replace(s, string(v[1]), "./"+util.Base64E(util.ValidFileName(string(v[1]))), -1)
+			temp := string(v[1])
+			s = strings.Replace(s, temp, "./"+util.Base64E(util.ValidFileName(temp))+"."+"png", -1) //  知乎图片默认后缀不知
 		}
 	}
 	return s

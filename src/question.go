@@ -186,7 +186,7 @@ func SavePicture(dir string, body []byte) {
 			if e && img != "" {
 				fmt.Println("原始文件：" + img)
 				temp := img
-				filename := util.Base64E(util.ValidFileName(temp))
+				filename := util.Base64E(util.ValidFileName(temp)) + "." + "png" //  知乎图片默认后缀不知
 				if util.FileExist(dir + "/" + filename) {
 					//fmt.Println("文件存在：" + dir + "/" + filename)
 				} else {
