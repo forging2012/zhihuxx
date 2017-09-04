@@ -15,6 +15,7 @@ package src
 import (
 	"fmt"
 	"github.com/hunterhug/GoSpider/util"
+	"regexp"
 	"strings"
 	"time"
 )
@@ -122,4 +123,25 @@ func OutputHtml(answer DataInfo) (qid, aid int, title, who, html string) {
 // 遇到返回的JSON中有中文乱码，请转意
 func JsonBack(body []byte) ([]byte, error) {
 	return util.JsonBack(body)
+}
+
+func OneOutputHtml(data string) string {
+	s := strings.Replace(data, "<script type='application/ecmascript' async='' src='../hotpic.js'></script>", "", -1)
+	s = strings.Replace(s, `  跳页: <input type="number" id="page" min="1" max="500" value="3" style="width:100px">
+  <input type="submit" onclick="var a=document.getElementById('page').value;location.href=a+'.html' "></div>`, "", -1)
+	s = strings.Replace(s, "data-src", "src", -1)
+	s = strings.Replace(s, "###link###", "", -1)
+
+	r1, _ := regexp.Compile("<noscript>.*?</noscript>")
+	s = r1.ReplaceAllString(s, "")
+	r, err := regexp.Compile(`src="(.*?)"`)
+	if err != nil {
+		return s
+	} else {
+		bb := r.FindAllSubmatch([]byte(s), -1)
+		for _, v := range bb {
+			s = strings.Replace(s, string(v[1]), "./"+util.Base64E(util.ValidFileName(string(v[1]))), -1)
+		}
+	}
+	return s
 }

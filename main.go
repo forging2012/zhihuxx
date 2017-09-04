@@ -34,7 +34,6 @@ func help() {
 	功能:
 	1. 可选抓取图片
 	2. 抓取答案
-	3. 可选关注小伙伴
 
 	选项:
 	1. 从收藏夹https://www.zhihu.com/collection/78172986批量获取很多问题答案
@@ -42,11 +41,7 @@ func help() {
 
 	请您按提示操作（Enter）！答案保存在data文件夹下！
 
-	因为知乎防盗链，放在你的网站上是看不见图片的！
-	但是本地查看是没问题的！可选择防盗链生成HTML
-
-	如果什么都没抓到请往exe同级目录cookie.txt
-	增加cookie，手动增加cookie见说明
+	如果什么都没抓到请往exe同级目录cookie.txt,增加cookie，手动增加cookie见说明
 
 	你亲爱的萌萌~ 努力工作中...
 	太阳萌飞了~~~
@@ -71,7 +66,7 @@ func tool() {
 	}
 }
 
-// 应该替换为本地照片！待做
+// 应该替换为本地照片！已经做了
 func main() {
 	help()
 	//err := zhihu.SetCookie("/home/jinhan/cookie.txt")
@@ -81,7 +76,8 @@ func main() {
 		time.Sleep(50 * time.Second)
 		os.Exit(0)
 	}
-	js := strings.ToLower(zhihu.Input("萌萌：你要发布到自己的网站上吗(JS解决防盗链)Y/N(默认N)", "n"))
+	js := strings.ToLower(zhihu.Input(`萌萌：你要发布答案到自己的网站上吗(JS解决防盗链)Y/N(默认N)
+因为知乎防盗链，放在你的网站上是看不见图片的！但是一般选N,请选择:`, "n"))
 	if strings.Contains(js, "y") {
 		zhihu.PublishToWeb = true
 		zhihu.InitJs()
@@ -164,7 +160,7 @@ func Base() {
 			util.SaveToFile(fmt.Sprintf("data/%d/%s", qid, zhihu.JsName), []byte(zhihu.Js))
 		}
 		util.SaveToFile(fmt.Sprintf("data/%d-%s.xx", qid, util.ValidFileName(title)), []byte(""))
-		err = util.SaveToFile(filename, []byte(html))
+		err = util.SaveToFile(filename, []byte(zhihu.OneOutputHtml(html)))
 
 		// html
 		util.MakeDir(fmt.Sprintf("data/%d-html", qid))
@@ -233,7 +229,7 @@ func Base() {
 			qid, aid, _, who, html := zhihu.OutputHtml(temp.Data[0])
 			filename := fmt.Sprintf("data/%d/%s-%d/%s-%d的回答.html", qid, who, aid, who, aid)
 			util.MakeDirByFile(filename)
-			err = util.SaveToFile(filename, []byte(html))
+			err = util.SaveToFile(filename, []byte(zhihu.OneOutputHtml(html)))
 			// html
 			util.MakeDir(fmt.Sprintf("data/%d-html", qid))
 			link := ""
@@ -328,7 +324,7 @@ func Many() {
 				util.SaveToFile(fmt.Sprintf("data/%d/%s", qid, zhihu.JsName), []byte(zhihu.Js))
 			}
 			util.SaveToFile(fmt.Sprintf("data/%d-%s.xx", qid, util.ValidFileName(title)), []byte(""))
-			err = util.SaveToFile(filename, []byte(html))
+			err = util.SaveToFile(filename, []byte(zhihu.OneOutputHtml(html)))
 			// html
 			util.MakeDir(fmt.Sprintf("data/%d-html", qid))
 			link := ""
@@ -399,7 +395,7 @@ func Many() {
 				qid, aid, _, who, html := zhihu.OutputHtml(temp.Data[0])
 				filename := fmt.Sprintf("data/%d/%s-%d/%s-%d的回答.html", qid, who, aid, who, aid)
 				util.MakeDirByFile(filename)
-				err = util.SaveToFile(filename, []byte(html))
+				err = util.SaveToFile(filename, []byte(zhihu.OneOutputHtml(html)))
 				// html
 				util.MakeDir(fmt.Sprintf("data/%d-html", qid))
 				link := ""
