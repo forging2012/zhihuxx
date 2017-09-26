@@ -147,3 +147,20 @@ func OneOutputHtml(data string) string {
 	}
 	return s
 }
+
+func BossOutputHtml(qid int, who string, aid int, data string) string {
+	r1, _ := regexp.Compile("<noscript>.*?</noscript>")
+	s := r1.ReplaceAllString(data, "")
+	r, err := regexp.Compile(`src="(.*?)"`)
+	if err != nil {
+		return s
+	} else {
+		bb := r.FindAllSubmatch([]byte(s), -1)
+		for _, v := range bb {
+			temp := string(v[1])
+			filetemp := strings.Replace(strings.Replace(util.ValidFileName(temp), "#", "_", -1), "jpg", "png", -1)
+			s = strings.Replace(s, temp, fmt.Sprintf("../%d/%s-%d/%s", qid, who, aid, filetemp), -1) //  知乎图片默认后缀不知
+		}
+	}
+	return s
+}
