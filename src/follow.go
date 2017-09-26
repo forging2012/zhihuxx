@@ -104,7 +104,7 @@ func CatchUser(fensi bool, token string, limit, offset int) ([]byte, error) {
 	} else {
 		if strings.Contains(string(body), "AuthenticationInvalid") {
 			data, _ := JsonBack(body)
-			return data, errors.New("AuthenticationInvalid cookie fail")
+			return data, errors.New("CookiePASS")
 		}
 	}
 	return body, err

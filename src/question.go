@@ -118,7 +118,7 @@ func CatchAnswer(url string, limit, page int) ([]byte, error) {
 	} else {
 		if strings.Contains(string(body), "AuthenticationInvalid") {
 			data, _ := JsonBack(body)
-			return data, errors.New("AuthenticationInvalid cookie fail")
+			return data, errors.New("CookiePASS")
 		}
 	}
 	return body, err
@@ -133,7 +133,7 @@ func CatchOneAnswer(Qid, Aid string) ([]byte, error) {
 	} else {
 		if strings.Contains(string(body), "AuthenticationInvalid") {
 			data, _ := JsonBack(body)
-			return data, errors.New("AuthenticationInvalid cookie fail")
+			return data, errors.New("CookiePASS")
 		}
 	}
 	return body, err

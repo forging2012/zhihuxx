@@ -301,20 +301,52 @@ func Many() {
 			continue
 		}
 
+		// 收藏夹已抓
+		newcatch := true
+		savecfff := collectids + ".txt" // 收藏夹续抓标志
+		cxx, _ := util.ReadfromFile(savecfff)
+		cxx1 := strings.Split(string(cxx), "\n")
+		if len(cxx1) > 0 {
+			cxx2 := util.ToLower(zhihu.Input("上次这个收藏夹没抓完, 继续抓按Y, 默认Y(Y/N)?", "Y"))
+			if strings.Contains(cxx2, "y") {
+				newcatch = false
+			}
+		}
 		god := util.ToLower(zhihu.Input("开启上帝模式吗(一路抓到底)，默认N(Y/N)?", "N"))
 		skip := false
 		if strings.Contains(god, "y") {
 			skip = true
 		}
-		qids := zhihu.CatchAllCollection(collectid)
-		if len(qids) == 0 {
-			fmt.Println("收藏夹下没问题！")
-			continue
+
+		qids := map[string]string{}
+		if newcatch {
+			qids = zhihu.CatchAllCollection(collectid)
+			if len(qids) == 0 {
+				fmt.Println("收藏夹下没有问题！")
+				continue
+			}
+			fmt.Printf("总计有%d个问题:\n", len(qids))
+			s := []string{}
+			for id, qa := range qids {
+				fmt.Printf("ID:%s，Answer:%s\n", id, qa)
+				temppp := fmt.Sprintf("%s-%s", id, strings.Replace(qa, ",", ".", -1))
+				s = append(s, temppp)
+				qids[id] = temppp
+			}
+			util.SaveToFile(savecfff, []byte(strings.Join(s, "\n")))
+		} else {
+			for _, v := range cxx1 {
+				qids[strings.Split(v, "-")[0]] = v
+			}
+			fmt.Printf("总计有%d个剩余问题:\n", len(qids))
 		}
-		fmt.Printf("总计有%d个问题:\n", len(qids))
-		for id, qa := range qids {
-			fmt.Printf("ID:%s，Answer:%s\n", id, qa)
+
+		// 抓過的刪除掉
+		txtmap := map[string]string{}
+		for k, v := range qids {
+			txtmap[k] = v
 		}
+
 		for id, _ := range qids {
 			page := 1
 			q := zhihu.Question(id)
@@ -324,7 +356,16 @@ func Many() {
 			body, err := zhihu.CatchAnswer(q, 1, page)
 			fmt.Println("预抓取第一个回答！")
 			if err != nil {
-				fmt.Println("a" + err.Error())
+				fmt.Println("问题预抓取出错:" + id + "-" + err.Error())
+				if strings.Contains(err.Error(), "CookiePASS") {
+					a := []string{}
+					for _, v := range txtmap {
+						a = append(a, v)
+					}
+					util.SaveToFile(savecfff, []byte(strings.Join(a, "\n")))
+					fmt.Println("cookie.txt失效!重新填写")
+					os.Exit(1)
+				}
 				continue
 			}
 
@@ -336,6 +377,7 @@ func Many() {
 				continue
 			}
 			if len(temp.Data) == 0 {
+				delete(txtmap, id)
 				fmt.Println("没有答案！")
 				continue
 			}
@@ -345,6 +387,7 @@ func Many() {
 			fmt.Println("哦，这个问题是:" + title)
 			if util.FileExist(fmt.Sprintf("data/%d-%s.xx", qid, util.ValidFileName(title))) {
 				fmt.Printf("已经存在：%s,跳过！\n", fmt.Sprintf("data/%d-%s.xx", qid, util.ValidFileName(title)))
+				delete(txtmap, id)
 				continue
 			}
 
@@ -359,7 +402,7 @@ func Many() {
 			if zhihu.PublishToWeb {
 				util.SaveToFile(fmt.Sprintf("data/%d/%s", qid, zhihu.JsName), []byte(zhihu.Js))
 			}
-			util.SaveToFile(fmt.Sprintf("data/%d-%s.xx", qid, util.ValidFileName(title)), []byte(""))
+
 			err = util.SaveToFile(filename, []byte(zhihu.OneOutputHtml(html)))
 			// html
 			util.MakeDir(fmt.Sprintf("data/%d-html", qid))
@@ -410,7 +453,16 @@ func Many() {
 				}
 				body, err = zhihu.CatchAnswer(q, 1, page+1)
 				if err != nil {
-					fmt.Println("抓取答案失败：" + err.Error())
+					fmt.Println("抓取答案失败：" + id + "-" + err.Error())
+					if strings.Contains(err.Error(), "CookiePASS") {
+						a := []string{}
+						for _, v := range txtmap {
+							a = append(a, v)
+						}
+						util.SaveToFile(savecfff, []byte(strings.Join(a, "\n")))
+						fmt.Println("cookie.txt失效!重新填写")
+						os.Exit(1)
+					}
 					continue
 				} else {
 					page = page + 1
@@ -464,6 +516,16 @@ func Many() {
 				}
 				zhihu.SavePicture(fmt.Sprintf("data/%d/%s-%d", qid, who, aid), []byte(html))
 			}
+
+			util.SaveToFile(fmt.Sprintf("data/%d-%s.xx", qid, util.ValidFileName(title)), []byte(""))
+			delete(txtmap, id)
 		}
+
+		a := []string{}
+		for _, v := range txtmap {
+			a = append(a, v)
+		}
+		util.SaveToFile(savecfff, []byte(strings.Join(a, "\n")))
+		fmt.Println("完成!")
 	}
 }
