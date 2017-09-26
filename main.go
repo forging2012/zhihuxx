@@ -306,7 +306,20 @@ func Many() {
 		savecfff := collectids + ".txt" // 收藏夹续抓标志
 		cxx, _ := util.ReadfromFile(savecfff)
 		cxx1 := strings.Split(string(cxx), "\n")
-		if len(cxx1) > 0 {
+
+		qids := map[string]string{}
+
+		for _, v := range cxx1 {
+			tttt := strings.Split(v, "-")
+			if len(tttt) != 2 {
+				continue
+			}
+			qids[tttt[0]] = v
+		}
+
+		if len(qids) > 0 {
+			fmt.Printf("总计有%d个剩余问题:\n", len(qids))
+
 			cxx2 := util.ToLower(zhihu.Input("上次这个收藏夹没抓完, 继续抓按Y, 默认Y(Y/N)?", "Y"))
 			if strings.Contains(cxx2, "y") {
 				newcatch = false
@@ -318,7 +331,6 @@ func Many() {
 			skip = true
 		}
 
-		qids := map[string]string{}
 		if newcatch {
 			qids = zhihu.CatchAllCollection(collectid)
 			if len(qids) == 0 {
@@ -334,11 +346,6 @@ func Many() {
 				qids[id] = temppp
 			}
 			util.SaveToFile(savecfff, []byte(strings.Join(s, "\n")))
-		} else {
-			for _, v := range cxx1 {
-				qids[strings.Split(v, "-")[0]] = v
-			}
-			fmt.Printf("总计有%d个剩余问题:\n", len(qids))
 		}
 
 		// 抓過的刪除掉
@@ -519,13 +526,14 @@ func Many() {
 
 			util.SaveToFile(fmt.Sprintf("data/%d-%s.xx", qid, util.ValidFileName(title)), []byte(""))
 			delete(txtmap, id)
-		}
 
-		a := []string{}
-		for _, v := range txtmap {
-			a = append(a, v)
+			// 每个问题都要保存一次,防止出错
+			a := []string{}
+			for _, v := range txtmap {
+				a = append(a, v)
+			}
+			util.SaveToFile(savecfff, []byte(strings.Join(a, "\n")))
+			fmt.Println("写入一次文件!")
 		}
-		util.SaveToFile(savecfff, []byte(strings.Join(a, "\n")))
-		fmt.Println("完成!")
 	}
 }
