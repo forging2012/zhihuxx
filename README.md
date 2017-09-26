@@ -20,6 +20,31 @@
  
 7. 根据用户唯一域名id获取她（它）他的全部回答（有用，优先级高,这个很强大,我要写!!!!!!初步思路,生成一个回答列表,每个回答的所有图片都在本地
 
+目录结构及获取的数据如下:
+
+```
+
+--- zhihu_windows_amd64.exe 生成的数据在data文件夹
+--- zhihu_linux_x86_64
+--- cookie.txt
+--- data
+     --- 27761934-如何让自拍的照片看上去像是别人拍的？.xx   *去重标志
+     --- 27761934  * 回答文件集
+        ---zhi-zhi-zhi-41-89-167963702 * 一个用户的回答 包括图片
+           --- zhi-zhi-zhi-41-89-167963702的回答.html (里面的图片链接都替换成本地链接)
+           --- https###pic1.zhimg.com#v2-22407b227c9a7a19aa0057f38bf6e754_r.png  (已经不是这种样子了)
+               https###pic1.zhimg.com#v2-7782ff69838c379173415458b97b5008_xll.jpg
+               https###pic1.zhimg.com#v2-c41bf767819fbc61b3ff7bb4c2900884_r.jpg
+
+        ---zhi-zhi-wei-zhi-zhi-36-38-164986419
+        ---zhi-zhi-wei-zhi-zhi-hu-hu-wei-hu-hu-164880780
+
+     --- 27761934-html  生成的html集,可以点击查看(可选择防盗链, 请用非火狐浏览器查看)
+        --- 1.html
+        --- 2.html
+```
+
+如果要重新获取答案,请将`.xx`文件去掉
 
 ## 一.小白指南
 
@@ -104,32 +129,6 @@ y
 
 ![](doc/1.png)
 ![](doc/2.png)
-
-目录结构及获取的数据如下:
-
-```
-
---- zhihu_windows_amd64.exe 生成的数据在data文件夹
---- zhihu_linux_x86_64
---- cookie.txt
---- data
-     --- 27761934-如何让自拍的照片看上去像是别人拍的？.xx   *去重标志
-     --- 27761934  * 回答文件集
-        ---zhi-zhi-zhi-41-89-167963702 * 一个用户的回答 包括图片
-           --- zhi-zhi-zhi-41-89-167963702的回答.html
-           --- https###pic1.zhimg.com#v2-22407b227c9a7a19aa0057f38bf6e754_r.png
-               https###pic1.zhimg.com#v2-7782ff69838c379173415458b97b5008_xll.jpg
-               https###pic1.zhimg.com#v2-c41bf767819fbc61b3ff7bb4c2900884_r.jpg
-
-        ---zhi-zhi-wei-zhi-zhi-36-38-164986419
-        ---zhi-zhi-wei-zhi-zhi-hu-hu-wei-hu-hu-164880780
-
-     --- 27761934-html  生成的html集,可以点击查看
-        --- 1.html 
-        --- 2.html
-```
-
-如果要重新获取答案,请将`.xx`文件去掉
 
 ## 二.API说明
 

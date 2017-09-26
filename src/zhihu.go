@@ -44,7 +44,7 @@ var (
 func init() {
 	// 第一步：可选设置全局
 	spider.SetLogLevel(Debug)   // 设置全局爬虫日志，可不设置，设置debug可打印出http请求轨迹
-	spider.SetGlobalTimeout(10) // 爬虫超时时间，可不设置，默认超长时间
+	spider.SetGlobalTimeout(60) // 爬虫超时时间，可不设置，默认超长时间
 
 	// 第二步： 新建一个爬虫对象，nil表示不使用代理IP，可选代理
 	spiders, err := spider.NewSpider(nil) // 也可以使用boss.New(nil),同名函数

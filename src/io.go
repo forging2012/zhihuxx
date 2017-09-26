@@ -141,7 +141,8 @@ func OneOutputHtml(data string) string {
 		bb := r.FindAllSubmatch([]byte(s), -1)
 		for _, v := range bb {
 			temp := string(v[1])
-			s = strings.Replace(s, temp, "./"+util.Base64E(util.ValidFileName(temp))+"."+"png", -1) //  知乎图片默认后缀不知
+			filetemp := strings.Replace(strings.Replace(util.ValidFileName(temp), "#", "_", -1), "jpg", "png", -1)
+			s = strings.Replace(s, temp, "./"+filetemp, -1) //  知乎图片默认后缀不知
 		}
 	}
 	return s
