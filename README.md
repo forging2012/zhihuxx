@@ -2,7 +2,7 @@
 
 源代码在master分支
 
-此分支保存的是收藏夹:61633672 的回答!
+此分支保存的是收藏夹:61633672 的回答! 每个问题保存30个回答!
 
 你可以fork下来或者下载ZIP欣赏!
 
@@ -10,9 +10,11 @@
 git clone https://github.com/hunterhug/zhihuxx.git
 ```
 
-使用过程中可能cookie会失效!
+入口在`index.html` , 还没抓完, 请大家接力啊!!!!! 好多!!!!!
 
-入口在`index.html`
+此库大于3G会怎么样????
+
+数据真的好多啊, 你们请移动EXE到其他地方下载, 使用需要复制Cookie到cookie.txt
 
 ```
 抓取收藏夹第199页
