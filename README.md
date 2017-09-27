@@ -1,6 +1,10 @@
 # Zhihu XX
 
-源代码在master分支
+源代码在master分支.
+
+此库过大!
+
+请移动到[https://github.com/hunterhug/GoZhihu](https://github.com/hunterhug/GoZhihu)
 
 此分支保存的是收藏夹:61633672 的回答! 每个问题保存30个回答!
 
