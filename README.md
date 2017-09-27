@@ -10,7 +10,7 @@
 git clone https://github.com/hunterhug/zhihuxx.git
 ```
 
-入口在`index.html` , 还没抓完, 请大家接力啊!!!!! 好多!!!!!
+入口在[index.html](index.html)` , 还没抓完, 请大家接力啊!!!!! 好多!!!!!
 
 此库大于3G会怎么样????
 
