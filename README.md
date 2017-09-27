@@ -14,7 +14,7 @@ git clone https://github.com/hunterhug/zhihuxx.git
 
 此库大于3G会怎么样????
 
-数据真的好多啊, 你们请移动EXE到其他地方下载, 使用需要复制Cookie到cookie.txt
+数据真的好多啊, 欢迎下载[工具](https://github.com/hunterhug/zhihuxx/releases), 你们请移动EXE到其他地方下载, 使用需要复制Cookie到cookie.txt
 
 ```
 抓取收藏夹第199页
